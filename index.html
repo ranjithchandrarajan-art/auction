@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+
+<style>
+
+/* LOGIN BACKGROUND */
+
+.login-bg{
+
+min-height:100vh;
+
+background-image:url(
+
+"https://drive.google.com/thumbnail?id=1thog9zF7Pohurj8aFWzGy9LA6XJc2DeY&sz=w2000"
+
+);
+
+background-size:cover;
+
+background-position:center;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+}
+
+
+/* GLASS LOGIN */
+
+.glass-card{
+
+background:rgba(255,255,255,.15);
+
+backdrop-filter:blur(15px);
+
+-webkit-backdrop-filter:blur(15px);
+
+padding:30px;
+
+border-radius:15px;
+
+width:95%;
+
+max-width:420px;
+
+color:white;
+
+box-shadow:0 10px 25px rgba(0,0,0,.35);
+
+}
+
+
+/* BRAND */
+
+.brand-logo{
+
+width:80px;
+
+margin-bottom:10px;
+
+}
+
+
+/* LOADER */
+
+.loader{
+
+display:none;
+
+text-align:center;
+
+margin-top:15px;
+
+}
+
+
+/* VEHICLE */
+
+.bigimg{
+
+width:100%;
+
+max-height:320px;
+
+object-fit:contain;
+
+background:#fafafa;
+
+}
+
+
+/* THUMB */
+
+.thumb-scroll{
+
+overflow-x:auto;
+
+white-space:nowrap;
+
+}
+
+.thumb{
+
+height:70px;
+
+width:90px;
+
+object-fit:cover;
+
+margin-right:6px;
+
+cursor:pointer;
+
+border-radius:5px;
+
+}
+
+
+/* STICKER */
+
+.bid-sticker{
+
+position:absolute;
+
+top:10px;
+
+left:10px;
+
+background:#28a745;
+
+color:white;
+
+padding:6px 10px;
+
+font-weight:bold;
+
+border-radius:6px;
+
+font-size:12px;
+
+z-index:100;
+
+}
+
+
+/* BID */
+
+.qty-box{
+
+display:flex;
+
+gap:12px;
+
+justify-content:center;
+
+align-items:center;
+
+}
+
+.qty-input{
+
+width:130px;
+
+text-align:center;
+
+font-weight:bold;
+
+}
+
+
+/* SECTION */
+
+.section-title{
+
+font-weight:600;
+
+border-bottom:1px solid #ddd;
+
+padding-bottom:4px;
+
+margin-bottom:10px;
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.vehicle-col{
+
+width:100%;
+
+}
+
+.bigimg{
+
+max-height:230px;
+
+}
+
+}
+
+
+/* PC */
+
+@media(min-width:769px){
+
+.vehicle-col{
+
+width:50%;
+
+}
+
+}
+
+</style>
+
+</head>
+
+
+
+<body class="bg-light">
+
+
+
+<!-- LOGIN -->
+
+<div id="loginDiv"
+
+class="login-bg">
+
+
+<div class="glass-card text-center">
+
+
+<img
+
+src="https://drive.google.com/thumbnail?id=1TEncZpQB8bRxs-Vje1aLQoh7QdIXz3BP&sz=w2000"
+
+class="brand-logo">
+
+
+<h4>
+
+Dealer Auction Portal
+
+</h4>
+
+<p>
+
+Secure Dealer Verification
+
+</p>
+
+
+<input id="mobile"
+
+class="form-control mt-3"
+
+placeholder="Enter Registered Mobile">
+
+
+<button id="loginBtn"
+
+onclick="login()"
+
+class="btn btn-light fw-bold w-100 mt-3">
+
+Verify Dealer
+
+</button>
+
+
+<div id="loader"
+
+class="loader">
+
+<div class="spinner-border text-light">
+
+</div>
+
+<div>
+
+Verifying Dealer...
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<!-- DASHBOARD -->
+
+<div id="dashboard"
+
+style="display:none"
+
+class="container mt-3">
+
+<h5 id="dealerName"
+
+class="text-center mb-3">
+
+</h5>
+
+
+<div id="stock"
+
+class="d-flex flex-wrap gap-3 justify-content-center">
+
+</div>
+
+</div>
+
+
+
+<script>
+
+let dealer={};
+
+let data={};
+
+
+// TODAY DATE IST SAFE
+
+function todayDate(){
+
+const d=new Date();
+
+return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+
+}
+
+
+
+// LOGIN
+
+function login(){
+
+let mobile=
+
+document.getElementById("mobile")
+
+.value.trim();
+
+if(!mobile){
+
+alert("Enter Mobile");
+
+return;
+
+}
+
+loginBtn.disabled=true;
+
+loginBtn.innerText="Verifying...";
+
+loader.style.display="block";
+
+
+google.script.run
+
+.withSuccessHandler(r=>{
+
+loader.style.display="none";
+
+loginBtn.disabled=false;
+
+loginBtn.innerText="Verify Dealer";
+
+if(!r.success){
+
+alert(r.message);
+
+return;
+
+}
+
+dealer=r;
+
+dealerName.innerText=
+
+"Welcome "+dealer.dealerName;
+
+loginDiv.style.display="none";
+
+dashboard.style.display="block";
+
+loadStock();
+
+})
+
+.loginDealer(mobile);
+
+}
+
+
+
+// LOAD
+
+function loadStock(){
+
+google.script.run
+
+.withSuccessHandler(r=>{
+
+data=r;
+
+renderStock();
+
+})
+
+.getData();
+
+}
+
+
+
+// IMAGE CHANGE
+
+function setBig(id,src){
+
+document.getElementById(
+
+"big"+id
+
+).src=src;
+
+}
+
+
+
+// PRICE +
+
+function increase(id){
+
+let input=
+
+document.getElementById("bid"+id);
+
+input.value=
+
+Number(input.value)+1000;
+
+}
+
+
+
+// PRICE -
+
+function decrease(id,expected){
+
+let input=
+
+document.getElementById("bid"+id);
+
+let val=Number(input.value);
+
+if(val-1000>=expected){
+
+input.value=val-1000;
+
+}
+
+}
+
+
+
+// RENDER
+
+function renderStock(){
+
+const container=document.getElementById("stock");
+
+const today=todayDate();
+
+let html="";
+
+const bids=data.allBids||[];
+
+
+// dealer bids
+
+const dealerBids=
+
+bids.filter(
+
+b=>b.mobile==dealer.mobile
+
+);
+
+const bidVehicleIds=
+
+dealerBids.map(b=>b.vehicleId);
+
+
+
+(data.inventory||[])
+
+.forEach(v=>{
+
+
+// highest bid
+
+let vehicleBids=
+
+bids.filter(
+
+b=>b.vehicleId==v.vehicleId
+
+);
+
+let highestBid=
+
+vehicleBids.length
+
+?
+
+Math.max(
+
+...vehicleBids.map(b=>b.amount||0)
+
+)
+
+:0;
+
+
+// dealer last bid
+
+let myBid=
+
+dealerBids.find(
+
+b=>b.vehicleId==v.vehicleId
+
+);
+
+let thumbs="";
+
+(v.photos||[])
+
+.forEach(p=>{
+
+thumbs+=`
+
+<img src="${p}"
+
+class="thumb"
+
+onclick="setBig('${v.vehicleId}','${p}')">
+
+`;
+
+});
+
+
+html+=`
+
+<div class="vehicle-col">
+
+<div class="card shadow-sm position-relative">
+
+
+${
+bidVehicleIds.includes(v.vehicleId)
+
+?
+
+`<div class="bid-sticker">
+
+BID SUBMITTED
+
+</div>`
+
+:""
+
+}
+
+
+<img id="big${v.vehicleId}"
+
+src="${(v.photos||[])[0]||''}"
+
+class="bigimg">
+
+
+<div class="thumb-scroll p-2">
+
+${thumbs}
+
+</div>
+
+
+<div class="card-body">
+
+
+<div class="section-title">
+
+Vehicle Details
+
+</div>
+
+
+<h6>
+
+${v.makeModel}
+
+</h6>
+
+
+<div class="small text-muted">
+
+Year : ${v.year}<br>
+
+KM : ${v.km}<br>
+
+Expected :
+
+₹${Number(v.price).toLocaleString()}
+
+</div>
+
+
+
+${
+highestBid>0
+
+?
+
+`
+
+<div class="badge bg-warning text-dark mt-2">
+
+Highest Bid :
+
+₹${highestBid.toLocaleString()}
+
+</div>
+
+`
+
+:""
+
+}
+
+
+
+${
+myBid
+
+?
+
+`
+
+<div class="badge bg-info mt-2">
+
+Your Last Bid :
+
+₹${myBid.amount.toLocaleString()}
+
+</div>
+
+`
+
+:""
+
+}
+
+
+
+<div class="section-title mt-3">
+
+Bid Details
+
+</div>
+
+
+<div class="qty-box">
+
+<button
+
+class="btn btn-danger"
+
+onclick="decrease('${v.vehicleId}',${v.price})">
+
+-
+
+</button>
+
+
+<input readonly
+
+id="bid${v.vehicleId}"
+
+value="${v.price}"
+
+class="form-control qty-input">
+
+
+<button
+
+class="btn btn-success"
+
+onclick="increase('${v.vehicleId}')">
+
++
+
+</button>
+
+</div>
+
+
+<input type="date"
+
+id="pay${v.vehicleId}"
+
+value="${today}"
+
+min="${today}"
+
+onkeydown="return false"
+
+class="form-control mt-3">
+
+
+<textarea
+
+id="remarks${v.vehicleId}"
+
+class="form-control mt-2"
+
+placeholder="Remarks">
+
+</textarea>
+
+
+<button
+
+onclick="submitBid(event,'${v.vehicleId}')"
+
+class="btn btn-primary w-100 mt-3">
+
+Submit Bid
+
+</button>
+
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+container.innerHTML=html;
+
+}
+
+
+
+// SUBMIT
+
+function submitBid(event,vehicleId){
+
+let btn=event.target;
+
+btn.disabled=true;
+
+btn.innerText="Submitting...";
+
+let amount=
+
+Number(document.getElementById(
+
+"bid"+vehicleId
+
+).value);
+
+let paymentDate=
+
+document.getElementById(
+
+"pay"+vehicleId
+
+).value;
+
+let remarks=
+
+document.getElementById(
+
+"remarks"+vehicleId
+
+).value;
+
+
+google.script.run
+
+.withSuccessHandler(r=>{
+
+alert(r.message);
+
+loadStock();
+
+btn.disabled=false;
+
+btn.innerText="Submit Bid";
+
+})
+
+.submitBid({
+
+dealerId:dealer.dealerId,
+
+dealerName:dealer.dealerName,
+
+mobile:dealer.mobile,
+
+vehicleId,
+
+amount,
+
+paymentDate,
+
+remarks
+
+});
+
+}
+
+setInterval(()=>{
+
+if(dealer.mobile){
+
+loadStock();
+
+}
+
+},60000);
+
+</script>
+
+</body>
+
+</html>
