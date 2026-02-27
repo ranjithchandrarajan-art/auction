@@ -132,45 +132,6 @@ allowfullscreen>
 © 2026 Dealer Auction Platform | Secure Dealer Environment
 </div>
 
-<script>
-function logoutFromPortal(){
-
-  const iframe = document.querySelector("iframe");
-
-  // Reload iframe (this resets Apps Script session)
-  iframe.src = iframe.src;
-
-}
-</script>
-
-<script>
-window.addEventListener("load", function(){
-
-  const btn = document.getElementById("logoutBtn");
-  const overlay = document.getElementById("logoutOverlay");
-  const iframe = document.querySelector("iframe");
-
-  if(!btn || !overlay || !iframe){
-    console.error("Logout elements missing");
-    return;
-  }
-
-  btn.addEventListener("click", function(){
-
-    // Show overlay
-    overlay.style.display = "flex";
-    overlay.style.opacity = "1";
-
-    // Small delay for animation
-    setTimeout(function(){
-      iframe.src = iframe.src;
-    }, 600);
-
-  });
-
-});
-</script>
-
 <!-- LOGOUT OVERLAY -->
 <div id="logoutOverlay"
   style="
@@ -202,5 +163,31 @@ window.addEventListener("load", function(){
   Logging out...
 
 </div>
+
+<script>
+
+window.onload = function(){
+
+  var btn = document.getElementById("logoutBtn");
+  var overlay = document.getElementById("logoutOverlay");
+  var iframe = document.querySelector("iframe");
+
+  if(!btn) return;
+
+  btn.onclick = function(){
+
+    // Show overlay
+    overlay.style.display = "flex";
+
+    // Small delay for smooth animation
+    setTimeout(function(){
+      iframe.src = iframe.src;
+    }, 800);
+
+  };
+
+};
+
+</script>
 </body>
 </html>
