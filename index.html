@@ -172,17 +172,18 @@ window.onload = function(){
   var overlay = document.getElementById("logoutOverlay");
   var iframe = document.querySelector("iframe");
 
-  if(!btn) return;
-
   btn.onclick = function(){
 
     // Show overlay
     overlay.style.display = "flex";
 
-    // Small delay for smooth animation
-    setTimeout(function(){
-      iframe.src = iframe.src;
-    }, 800);
+    // When iframe reload completes, hide overlay
+    iframe.onload = function(){
+      overlay.style.display = "none";
+    };
+
+    // Reload iframe
+    iframe.src = iframe.src;
 
   };
 
