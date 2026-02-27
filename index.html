@@ -130,10 +130,15 @@ allowfullscreen>
 
 <script>
 function logoutFromPortal(){
+
   const iframe = document.querySelector("iframe");
 
-  // Tell Apps Script to logout
-  iframe.contentWindow.postMessage("LOGOUT","*");
+  // send message to iframe
+  iframe.contentWindow.postMessage(
+    { type: "LOGOUT_REQUEST" },
+    "*"
+  );
+
 }
 </script>
 
