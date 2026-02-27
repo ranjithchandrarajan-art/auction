@@ -66,6 +66,38 @@ height:calc(100vh - 110px);
 border:none;
 }
 
+<div id="logoutOverlay"
+  style="
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.65);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    color:white;
+    font-family:Arial;
+    font-size:18px;
+    z-index:2000;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .4s ease;
+  ">
+
+  <div style="
+      width:45px;
+      height:45px;
+      border:4px solid rgba(255,255,255,0.3);
+      border-top:4px solid white;
+      border-radius:50%;
+      animation:spin 1s linear infinite;
+      margin-bottom:15px;
+  "></div>
+
+  Logging out...
+
+</div>
+
 /* MOBILE */
 
 @media(max-width:768px){
