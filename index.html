@@ -96,7 +96,23 @@ height:calc(100vh - 100px);
 <!-- TOP BAR -->
 
 <div class="brandbar">
-Dealer Auction Portal
+  <span>Dealer Auction Portal</span>
+
+  <button id="logoutBtn"
+    onclick="logoutFromPortal()"
+    style="
+      position:absolute;
+      right:15px;
+      background:white;
+      color:#364586;
+      border:none;
+      padding:6px 12px;
+      border-radius:6px;
+      font-size:13px;
+      cursor:pointer;
+    ">
+    Logout
+  </button>
 </div>
 
 <!-- APPS SCRIPT PORTAL -->
@@ -111,6 +127,15 @@ allowfullscreen>
 <div class="footerbar">
 © 2026 Dealer Auction Platform | Secure Dealer Environment
 </div>
+
+<script>
+function logoutFromPortal(){
+  const iframe = document.querySelector("iframe");
+
+  // Tell Apps Script to logout
+  iframe.contentWindow.postMessage("LOGOUT","*");
+}
+</script>
 
 </body>
 </html>
