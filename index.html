@@ -100,21 +100,22 @@ height:calc(100vh - 100px);
 <!-- TOP BAR -->
 
 <div class="brandbar">
-  <span>Dealer Auction Portal</span>
+  <span id="portalTitle">
+    Dealer Auction Portal
+    <span id="bidCountBadge"
+      style="
+        margin-left:10px;
+        background:#28a745;
+        padding:4px 8px;
+        border-radius:12px;
+        font-size:12px;
+        display:none;
+      ">
+      0
+    </span>
+  </span>
 
-  <button id="logoutBtn"
-    style="
-      position:absolute;
-      right:15px;
-      background:white;
-      color:#364586;
-      border:none;
-      padding:6px 12px;
-      border-radius:6px;
-      font-size:13px;
-      cursor:pointer;
-      z-index:1001;
-    ">
+  <button id="logoutBtn" ...>
     Logout
   </button>
 </div>
@@ -189,6 +190,25 @@ window.onload = function(){
 
 };
 
+</script>
+
+<script>
+window.addEventListener("message", function(event){
+
+  if(event.data && event.data.type === "BID_COUNT"){
+
+    var badge = document.getElementById("bidCountBadge");
+
+    if(event.data.count > 0){
+      badge.style.display = "inline-block";
+      badge.innerText = event.data.count + " Bids";
+    }else{
+      badge.style.display = "none";
+    }
+
+  }
+
+});
 </script>
 </body>
 </html>
