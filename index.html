@@ -115,7 +115,20 @@ height:calc(100vh - 100px);
     </span>
   </span>
 
-  <button id="logoutBtn" ...>
+  <button id="logoutBtn"
+  style="
+    position:absolute;
+    right:25px;          /* increased spacing */
+    top:50%;
+    transform:translateY(-50%);
+    background:white;
+    color:#364586;
+    border:none;
+    padding:6px 14px;    /* slightly wider */
+    border-radius:6px;
+    font-size:13px;
+    cursor:pointer;
+  ">
     Logout
   </button>
 </div>
