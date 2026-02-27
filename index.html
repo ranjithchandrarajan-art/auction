@@ -133,11 +133,8 @@ function logoutFromPortal(){
 
   const iframe = document.querySelector("iframe");
 
-  // send message to iframe
-  iframe.contentWindow.postMessage(
-    { type: "LOGOUT_REQUEST" },
-    "*"
-  );
+  // Reload iframe (this resets Apps Script session)
+  iframe.src = iframe.src;
 
 }
 </script>
