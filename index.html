@@ -10,6 +10,10 @@ content="width=device-width,initial-scale=1">
 
 <style>
 
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* PAGE RESET */
 
 body{
@@ -175,13 +179,33 @@ function logoutFromPortal(){
 document.addEventListener("DOMContentLoaded", function(){
 
   const btn = document.getElementById("logoutBtn");
+  const overlay = document.getElementById("logoutOverlay");
+  const iframe = document.querySelector("iframe");
 
   btn.addEventListener("click", function(){
 
-    const iframe = document.querySelector("iframe");
+    // Disable button
+    btn.disabled = true;
+    btn.style.opacity = "0.7";
 
-    // Force reload iframe properly
-    iframe.contentWindow.location.reload(true);
+    // Show animation
+    overlay.style.opacity = "1";
+    overlay.style.pointerEvents = "all";
+
+    // Wait for animation effect
+    setTimeout(function(){
+
+      iframe.contentWindow.location.reload(true);
+
+      // Hide overlay after reload delay
+      setTimeout(function(){
+        overlay.style.opacity = "0";
+        overlay.style.pointerEvents = "none";
+        btn.disabled = false;
+        btn.style.opacity = "1";
+      }, 1200);
+
+    }, 500);
 
   });
 
