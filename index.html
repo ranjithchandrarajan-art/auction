@@ -195,13 +195,19 @@ window.onload = function(){
 <script>
 window.addEventListener("message", function(event){
 
-  if(event.data && event.data.type === "BID_COUNT"){
+  if(!event.data) return;
+
+  if(event.data.type === "BID_COUNT"){
 
     var badge = document.getElementById("bidCountBadge");
 
-    if(event.data.count > 0){
+    if(!badge) return;
+
+    var count = event.data.count || 0;
+
+    if(count > 0){
       badge.style.display = "inline-block";
-      badge.innerText = event.data.count + " Bids";
+      badge.innerText = count + " Bids";
     }else{
       badge.style.display = "none";
     }
