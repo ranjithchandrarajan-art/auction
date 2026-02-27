@@ -99,7 +99,6 @@ height:calc(100vh - 100px);
   <span>Dealer Auction Portal</span>
 
   <button id="logoutBtn"
-    onclick="logoutFromPortal()"
     style="
       position:absolute;
       right:15px;
@@ -110,6 +109,7 @@ height:calc(100vh - 100px);
       border-radius:6px;
       font-size:13px;
       cursor:pointer;
+      z-index:1001;
     ">
     Logout
   </button>
@@ -139,5 +139,21 @@ function logoutFromPortal(){
 }
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  const btn = document.getElementById("logoutBtn");
+
+  btn.addEventListener("click", function(){
+
+    const iframe = document.querySelector("iframe");
+
+    // Force reload iframe properly
+    iframe.contentWindow.location.reload(true);
+
+  });
+
+});
+</script>
 </body>
 </html>
