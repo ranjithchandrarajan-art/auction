@@ -119,21 +119,22 @@ height:calc(100dvh - 100px);
 
   <!-- CENTER SEARCH (NEW) -->
   <input type="text"
-         id="globalSearch"
-         placeholder="Search Vehicle ID, Make, Year, KM..."
-         onkeyup="sendSearchToIframe()"
-         style="
-           position:absolute;
-           left:50%;
-           transform:translateX(-50%);
-           width:350px;
-           max-width:40%;
-           padding:6px 10px;
-           border-radius:6px;
-           border:none;
-           outline:none;
-           font-size:13px;
-         ">
+       id="globalSearch"
+       placeholder="Search Vehicle ID, Make, Year, KM..."
+       onkeyup="sendSearchToIframe()"
+       style="
+         position:absolute;
+         left:50%;
+         transform:translateX(-50%);
+         width:350px;
+         max-width:40%;
+         padding:6px 10px;
+         border-radius:6px;
+         border:none;
+         outline:none;
+         font-size:13px;
+         display:none;   /* IMPORTANT */
+       ">
 
   <!-- RIGHT LOGOUT -->
   <button id="logoutBtn"
@@ -205,19 +206,33 @@ window.onload = function(){
   var btn = document.getElementById("logoutBtn");
   var overlay = document.getElementById("logoutOverlay");
   var iframe = document.querySelector("iframe");
+  var search = document.getElementById("globalSearch");
 
   btn.onclick = function(){
 
-    // Show overlay
+    // 🔹 Hide search immediately
+    if(search){
+      search.style.display = "none";
+      search.value = "";
+    }
+
+    // 🔹 Show overlay
     overlay.style.display = "flex";
 
-    // When iframe reload completes, hide overlay
+    // 🔹 Hide overlay after iframe reload
     iframe.onload = function(){
       overlay.style.display = "none";
     };
 
-    // Reload iframe
-    iframe.src = iframe.src;
+    // 🔹 Reload iframe (return to login)
+    iframe.contentWindow.postMessage(
+  { type: "LOGOUT_REQUEST" },
+  "*"
+);
+
+setTimeout(function(){
+  iframe.src = iframe.src;
+}, 400);
 
   };
 
