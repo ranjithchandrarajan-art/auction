@@ -208,33 +208,28 @@ window.onload = function(){
   var iframe = document.querySelector("iframe");
   var search = document.getElementById("globalSearch");
 
-  btn.onclick = function(){
+btn.onclick = function(){
 
-    // 🔹 Hide search immediately
-    if(search){
-      search.style.display = "none";
-      search.value = "";
-    }
+  // 🔹 Send logout signal to iframe first
+  iframe.contentWindow.postMessage(
+    { type: "LOGOUT_REQUEST" },
+    "*"
+  );
 
-    // 🔹 Show overlay
-    overlay.style.display = "flex";
+  // 🔹 Hide search immediately
+  var search = document.getElementById("globalSearch");
+  if(search){
+    search.style.display = "none";
+    search.value = "";
+  }
 
-    // 🔹 Hide overlay after iframe reload
-    iframe.onload = function(){
-      overlay.style.display = "none";
-    };
+  // 🔹 Show overlay
+  overlay.style.display = "flex";
 
-    // 🔹 Reload iframe (return to login)
-    iframe.contentWindow.postMessage(
-  { type: "LOGOUT_REQUEST" },
-  "*"
-);
-
-setTimeout(function(){
-  iframe.src = iframe.src;
-}, 400);
-
-  };
+  // 🔹 Reload iframe
+  setTimeout(function(){
+    iframe.src = iframe.src;
+  }, 500);
 
 };
 
@@ -242,21 +237,30 @@ setTimeout(function(){
 
 <script>
 window.addEventListener("message", function(event){
+  console.log("Message received:", event.data);
 
   if(!event.data) return;
 
-  /* 🔹 SHOW SEARCH AFTER LOGIN */
+  var search = document.getElementById("globalSearch");
+  var badge  = document.getElementById("bidCountBadge");
+
+  /* 🔹 LOGIN SUCCESS */
   if(event.data.type === "LOGIN_SUCCESS"){
-    var search = document.getElementById("globalSearch");
     if(search){
       search.style.display = "block";
     }
   }
 
-  /* 🔹 UPDATE BID COUNT BADGE */
-  if(event.data.type === "BID_COUNT"){
+  /* 🔹 LOGOUT REQUEST */
+  if(event.data.type === "LOGOUT_REQUEST"){
+    if(search){
+      search.style.display = "none";
+      search.value = "";
+    }
+  }
 
-    var badge = document.getElementById("bidCountBadge");
+  /* 🔹 BID COUNT */
+  if(event.data.type === "BID_COUNT"){
     if(!badge) return;
 
     var count = event.data.count || 0;
@@ -267,7 +271,6 @@ window.addEventListener("message", function(event){
     }else{
       badge.style.display = "none";
     }
-
   }
 
 });
