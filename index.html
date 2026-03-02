@@ -31,7 +31,8 @@ overflow:hidden;
   color:white;
   display:flex;
   align-items:center;
-  justify-content:space-between;
+  justify-content: center;
+  gap: 40px;
   padding:0 20px;
   font-weight:600;
   z-index:999;
@@ -222,28 +223,40 @@ window.onload = function(){
   var iframe = document.querySelector("iframe");
   var search = document.getElementById("globalSearch");
 
-btn.onclick = function(){
-
-  var search = document.getElementById("globalSearch");
-
-  // 🔹 Hide search bar
-  if(search){
-    search.style.display = "none";
-    search.value = "";
-  }
-
-  // 🔹 Show logout overlay
-  overlay.style.display = "flex";
-
-  // 🔹 Hide overlay after iframe reload
+  /* Detect iframe load */
   iframe.onload = function(){
+
+    try{
+      // If iframe contains dashboard element, show search
+      var innerDoc = iframe.contentWindow.document;
+
+      if(innerDoc.getElementById("dashboard")){
+        search.style.display = "inline-block";
+      }else{
+        search.style.display = "none";
+      }
+
+    }catch(e){
+      // Cross origin safety fallback
+      search.style.display = "none";
+    }
+
     overlay.style.display = "none";
   };
 
-  // 🔹 Reload iframe (back to login)
-  iframe.src = iframe.src;
+  /* Logout Click */
+  btn.onclick = function(){
 
-};  
+    search.style.display = "none";
+    search.value = "";
+
+    overlay.style.display = "flex";
+
+    iframe.src = iframe.src; // reload to login
+
+  };
+
+};
 </script>
 
 <script>
@@ -254,11 +267,6 @@ window.addEventListener("message", function(event){
 
   var search = document.getElementById("globalSearch");
   var badge  = document.getElementById("bidCountBadge");
-
-  /* 🔹 LOGIN SUCCESS */
-  if(event.data.type === "LOGIN_SUCCESS"){
-  document.getElementById("globalSearch").style.display = "inline-block";
-}
 
   /* 🔹 LOGOUT REQUEST */
   if(event.data.type === "LOGOUT_REQUEST"){
