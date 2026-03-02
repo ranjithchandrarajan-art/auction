@@ -109,17 +109,23 @@ const iframe = document.querySelector("iframe");
 const search = document.getElementById("globalSearch");
 const logoutBtn = document.getElementById("logoutBtn");
 
-/* CHECK LOGIN STATE EVERY 500ms */
-setInterval(function(){
+/* DEBUG: check if messages arrive */
+window.addEventListener("message", function(event){
 
-  if(localStorage.getItem("dealerLoggedIn")==="YES"){
-    search.style.display="inline-block";
-  }else{
-    search.style.display="none";
-    search.value="";
+  console.log("Message received:", event.data);
+
+  if(!event.data) return;
+
+  if(event.data.type === "LOGIN_SUCCESS"){
+    search.style.display = "inline-block";
   }
 
-},500);
+  if(event.data.type === "LOGOUT_SUCCESS"){
+    search.style.display = "none";
+    search.value = "";
+  }
+
+});
 
 /* SEND SEARCH */
 function sendSearchToIframe(){
@@ -129,8 +135,8 @@ function sendSearchToIframe(){
   },"*");
 }
 
-/* LOGOUT */
-logoutBtn.onclick=function(){
+/* LOGOUT BUTTON */
+logoutBtn.onclick = function(){
   iframe.contentWindow.postMessage({
     type:"LOGOUT_REQUEST"
   },"*");
