@@ -93,30 +93,19 @@ document.addEventListener("DOMContentLoaded", function(){
   const iframe = document.getElementById("portalFrame");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  let hasLoggedIn = false;
-
-  // Always hide initially
+  // Always hidden initially
   logoutBtn.style.display = "none";
 
-  iframe.addEventListener("load", function(){
+  // Listen for login success from Apps Script
+  window.addEventListener("message", function(event){
 
-    const url = iframe.src;
-
-    // If logout triggered
-    if(url.includes("logout=true")){
-      hasLoggedIn = false;
-      logoutBtn.style.display = "none";
-      return;
-    }
-
-    // First normal load (initial page) — do nothing
-    if(!hasLoggedIn){
-      hasLoggedIn = true;
+    if(event.data && event.data.type === "LOGIN_SUCCESS"){
       logoutBtn.style.display = "inline-block";
     }
 
   });
 
+  // Logout click
   logoutBtn.onclick = function(){
 
     logoutBtn.style.display = "none";
