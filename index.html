@@ -112,7 +112,20 @@ document.addEventListener("DOMContentLoaded", function(){
   const search = document.getElementById("globalSearch");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  /* ================= LOGOUT ================= */
+  /* INITIAL STATE */
+  search.style.display = "none";
+
+  /* SHOW SEARCH WHEN IFRAME LOADS (ASSUME LOGIN) */
+  iframe.addEventListener("load", function(){
+
+    // If URL does NOT contain logout flag → show search
+    if(!iframe.src.includes("logout=true")){
+      search.style.display = "block";
+    }
+
+  });
+
+  /* LOGOUT */
   logoutBtn.onclick = function(){
 
     search.style.display = "none";
@@ -123,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   };
 
-  /* ================= SEARCH ================= */
+  /* SEARCH */
   search.addEventListener("keyup", function(){
 
     const baseUrl = iframe.src.split("?")[0];
