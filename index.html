@@ -108,10 +108,19 @@ allowfullscreen></iframe>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
+  const iframe = document.getElementById("portalFrame");
+  const search = document.getElementById("globalSearch");
   const logoutBtn = document.getElementById("logoutBtn");
 
   logoutBtn.onclick = function(){
-    alert("Logout button clicked");
+
+    // Hide search
+    search.style.display = "none";
+    search.value = "";
+
+    // Force reload safely (CROSS ORIGIN SAFE)
+    iframe.src = iframe.src;
+
   };
 
 });
