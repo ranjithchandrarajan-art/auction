@@ -109,39 +109,32 @@ const iframe = document.querySelector("iframe");
 const search = document.getElementById("globalSearch");
 const logoutBtn = document.getElementById("logoutBtn");
 
-/* SHOW / HIDE SEARCH BASED ON LOGIN */
-window.addEventListener("message", function(event){
+/* CHECK LOGIN STATE EVERY 500ms */
+setInterval(function(){
 
-  if(!event.data) return;
-
-  if(event.data.type === "LOGIN_SUCCESS"){
-    search.style.display = "inline-block";
+  if(localStorage.getItem("dealerLoggedIn")==="YES"){
+    search.style.display="inline-block";
+  }else{
+    search.style.display="none";
+    search.value="";
   }
 
-  if(event.data.type === "LOGOUT_SUCCESS"){
-    search.style.display = "none";
-    search.value = "";
-  }
-  console.log(event.data)
+},500);
 
-});
-
-/* SEND SEARCH TO APPS SCRIPT */
+/* SEND SEARCH */
 function sendSearchToIframe(){
   iframe.contentWindow.postMessage({
-    type: "GLOBAL_SEARCH",
-    value: search.value
-  }, "*");
+    type:"GLOBAL_SEARCH",
+    value:search.value
+  },"*");
 }
 
-/* LOGOUT BUTTON */
-logoutBtn.addEventListener("click", function(){
-
+/* LOGOUT */
+logoutBtn.onclick=function(){
   iframe.contentWindow.postMessage({
-    type: "LOGOUT_REQUEST"
-  }, "*");
-
-});
+    type:"LOGOUT_REQUEST"
+  },"*");
+};
 </script>
 
 </body>
