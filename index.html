@@ -133,7 +133,9 @@ height:calc(100dvh - 100px);
          border:none;
          outline:none;
          font-size:13px;
-         display:none;   /* IMPORTANT */
+         opacity:0;
+        visibility:hidden;
+        transition:opacity .3s ease;
        ">
 
   <!-- RIGHT LOGOUT -->
@@ -210,26 +212,25 @@ window.onload = function(){
 
 btn.onclick = function(){
 
-  // 🔹 Send logout signal to iframe first
-  iframe.contentWindow.postMessage(
-    { type: "LOGOUT_REQUEST" },
-    "*"
-  );
-
-  // 🔹 Hide search immediately
   var search = document.getElementById("globalSearch");
+
+  // 🔹 Hide search smoothly
   if(search){
-    search.style.display = "none";
+    search.style.opacity = "0";
+    search.style.visibility = "hidden";
     search.value = "";
   }
 
-  // 🔹 Show overlay
+  // 🔹 Show logout overlay
   overlay.style.display = "flex";
 
-  // 🔹 Reload iframe
-  setTimeout(function(){
-    iframe.src = iframe.src;
-  }, 500);
+  // 🔹 Hide overlay after iframe reload
+  iframe.onload = function(){
+    overlay.style.display = "none";
+  };
+
+  // 🔹 Reload iframe (returns to login screen)
+  iframe.src = iframe.src;
 
 };
 
@@ -246,10 +247,12 @@ window.addEventListener("message", function(event){
 
   /* 🔹 LOGIN SUCCESS */
   if(event.data.type === "LOGIN_SUCCESS"){
-    if(search){
-      search.style.display = "block";
-    }
+  var search = document.getElementById("globalSearch");
+  if(search){
+    search.style.visibility = "visible";
+    search.style.opacity = "1";
   }
+}
 
   /* 🔹 LOGOUT REQUEST */
   if(event.data.type === "LOGOUT_REQUEST"){
