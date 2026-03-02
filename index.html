@@ -105,27 +105,24 @@ allowfullscreen></iframe>
 </div>
 
 <script>
-const iframe = document.querySelector("iframe");
-const search = document.getElementById("globalSearch");
-const logoutBtn = document.getElementById("logoutBtn");
+document.addEventListener("DOMContentLoaded", function(){
 
-window.addEventListener("message", function(event){
+  const iframe = document.querySelector("iframe");
+  const search = document.getElementById("globalSearch");
+  const logoutBtn = document.getElementById("logoutBtn");
 
-  if(event.data && event.data.type === "LOGIN_SUCCESS"){
-    search.style.display = "inline-block";
-  }
+  logoutBtn.onclick = function(){
 
-});
+    console.log("Logout clicked");
 
-/* LOGOUT BUTTON */
-logoutBtn.addEventListener("click", function(){
+    // Hide search
+    search.style.display = "none";
+    search.value = "";
 
-  // Hide search immediately
-  search.style.display = "none";
-  search.value = "";
+    // Force reload iframe
+    iframe.contentWindow.location.reload(true);
 
-  // Reload iframe (forces return to login)
-  iframe.src = iframe.src;
+  };
 
 });
 </script>
