@@ -108,21 +108,10 @@ allowfullscreen></iframe>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
-  const iframe = document.querySelector("iframe");
-  const search = document.getElementById("globalSearch");
   const logoutBtn = document.getElementById("logoutBtn");
 
   logoutBtn.onclick = function(){
-
-    console.log("Logout clicked");
-
-    // Hide search
-    search.style.display = "none";
-    search.value = "";
-
-    // Force reload iframe
-    iframe.contentWindow.location.reload(true);
-
+    alert("Logout button clicked");
   };
 
 });
