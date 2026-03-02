@@ -112,16 +112,26 @@ document.addEventListener("DOMContentLoaded", function(){
   const search = document.getElementById("globalSearch");
   const logoutBtn = document.getElementById("logoutBtn");
 
+  /* ================= LOGOUT ================= */
   logoutBtn.onclick = function(){
 
     search.style.display = "none";
     search.value = "";
 
-    // Add logout flag to URL
     const baseUrl = iframe.src.split("?")[0];
     iframe.src = baseUrl + "?logout=true";
 
   };
+
+  /* ================= SEARCH ================= */
+  search.addEventListener("keyup", function(){
+
+    const baseUrl = iframe.src.split("?")[0];
+    const value = encodeURIComponent(search.value.trim());
+
+    iframe.src = baseUrl + "?search=" + value;
+
+  });
 
 });
 </script>
