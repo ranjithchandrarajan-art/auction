@@ -93,13 +93,30 @@ document.addEventListener("DOMContentLoaded", function(){
   const iframe = document.getElementById("portalFrame");
   const logoutBtn = document.getElementById("logoutBtn");
 
-      /* LOGOUT */
+  // Initial state
+  logoutBtn.style.display = "none";
+
+  iframe.addEventListener("load", function(){
+
+    const url = iframe.src;
+
+    // If logout flag present → hide button
+    if(url.includes("logout=true")){
+      logoutBtn.style.display = "none";
+    } else {
+      // Normal load = assume logged in
+      logoutBtn.style.display = "inline-block";
+    }
+
+  });
+
   logoutBtn.onclick = function(){
 
     const baseUrl = iframe.src.split("?")[0];
     iframe.src = baseUrl + "?logout=true";
 
   };
+
 });
 </script>
 </body>
