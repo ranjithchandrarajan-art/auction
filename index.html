@@ -114,12 +114,12 @@ document.addEventListener("DOMContentLoaded", function(){
 
   logoutBtn.onclick = function(){
 
-    // Hide search
     search.style.display = "none";
     search.value = "";
 
-    // Force reload safely (CROSS ORIGIN SAFE)
-    iframe.src = iframe.src;
+    // Add logout flag to URL
+    const baseUrl = iframe.src.split("?")[0];
+    iframe.src = baseUrl + "?logout=true";
 
   };
 
