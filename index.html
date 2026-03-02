@@ -105,20 +105,12 @@ allowfullscreen></iframe>
 </div>
 
 <script>
-const iframe = document.getElementById("portalFrame");
+const iframe = document.querySelector("iframe");
 const search = document.getElementById("globalSearch");
 const logoutBtn = document.getElementById("logoutBtn");
 
-/* SEARCH SEND */
-function sendSearch(){
-  iframe.contentWindow.postMessage({
-    type:"GLOBAL_SEARCH",
-    value:search.value
-  },"*");
-}
-
-/* MESSAGE LISTENER */
-window.addEventListener("message",function(event){
+/* SHOW / HIDE SEARCH BASED ON LOGIN */
+window.addEventListener("message", function(event){
 
   if(!event.data) return;
 
@@ -128,17 +120,27 @@ window.addEventListener("message",function(event){
 
   if(event.data.type === "LOGOUT_SUCCESS"){
     search.style.display = "none";
-    search.value="";
+    search.value = "";
   }
 
 });
 
-/* LOGOUT CLICK */
-logoutBtn.onclick = function(){
+/* SEND SEARCH TO APPS SCRIPT */
+function sendSearchToIframe(){
   iframe.contentWindow.postMessage({
-    type:"LOGOUT_REQUEST"
-  },"*");
-};
+    type: "GLOBAL_SEARCH",
+    value: search.value
+  }, "*");
+}
+
+/* LOGOUT BUTTON */
+logoutBtn.addEventListener("click", function(){
+
+  iframe.contentWindow.postMessage({
+    type: "LOGOUT_REQUEST"
+  }, "*");
+
+});
 </script>
 
 </body>
