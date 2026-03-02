@@ -76,7 +76,21 @@ iframe{
 
 <div class="brandbar">
   Dealer Auction Portal
-  <button id="logoutBtn">Logout</button>
+  <button id="logoutBtn"
+    style="
+      position:absolute;
+      right:20px;
+      background:white;
+      color:#364586;
+      border:none;
+      padding:6px 14px;
+      border-radius:6px;
+      font-size:13px;
+      cursor:pointer;
+      display:none;   /* 🔥 ADD THIS */
+  ">
+  Logout
+</button>
 </div>
 
 <iframe id="portalFrame"
@@ -93,10 +107,7 @@ document.addEventListener("DOMContentLoaded", function(){
   const iframe = document.getElementById("portalFrame");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  // Always hidden initially
-  logoutBtn.style.display = "none";
-
-  // Listen for login success from Apps Script
+  // Show when Apps Script confirms login
   window.addEventListener("message", function(event){
 
     if(event.data && event.data.type === "LOGIN_SUCCESS"){
