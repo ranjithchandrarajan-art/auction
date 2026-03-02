@@ -245,10 +245,18 @@ window.addEventListener("message", function(event){
 
   if(!event.data) return;
 
+  /* 🔹 SHOW SEARCH AFTER LOGIN */
+  if(event.data.type === "LOGIN_SUCCESS"){
+    var search = document.getElementById("globalSearch");
+    if(search){
+      search.style.display = "block";
+    }
+  }
+
+  /* 🔹 UPDATE BID COUNT BADGE */
   if(event.data.type === "BID_COUNT"){
 
     var badge = document.getElementById("bidCountBadge");
-
     if(!badge) return;
 
     var count = event.data.count || 0;
