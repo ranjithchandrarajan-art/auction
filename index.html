@@ -101,6 +101,7 @@ height:calc(100dvh - 100px);
 
 <div class="brandbar">
 
+  <!-- LEFT TITLE -->
   <span id="portalTitle">
     Dealer Auction Portal
     <span id="bidCountBadge"
@@ -116,6 +117,25 @@ height:calc(100dvh - 100px);
     </span>
   </span>
 
+  <!-- CENTER SEARCH (NEW) -->
+  <input type="text"
+         id="globalSearch"
+         placeholder="Search Vehicle ID, Make, Year, KM..."
+         onkeyup="sendSearchToIframe()"
+         style="
+           position:absolute;
+           left:50%;
+           transform:translateX(-50%);
+           width:350px;
+           max-width:40%;
+           padding:6px 10px;
+           border-radius:6px;
+           border:none;
+           outline:none;
+           font-size:13px;
+         ">
+
+  <!-- RIGHT LOGOUT -->
   <button id="logoutBtn"
   style="
     position:absolute;
@@ -228,6 +248,19 @@ window.addEventListener("message", function(event){
   }
 
 });
+</script>
+<script>
+function sendSearchToIframe(){
+
+  const iframe = document.querySelector("iframe");
+  const value = document.getElementById("globalSearch").value;
+
+  iframe.contentWindow.postMessage(
+    { type: "GLOBAL_SEARCH", value: value },
+    "*"
+  );
+
+}
 </script>
 </body>
 </html>
