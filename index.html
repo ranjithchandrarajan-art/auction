@@ -38,6 +38,21 @@ overflow:hidden;
   box-shadow:0 2px 6px rgba(0,0,0,.5);
 }
 
+.brand-left{
+  flex:1;
+  text-align:left;
+}
+
+.brand-center{
+  flex:1;
+  text-align:center;
+}
+
+.brand-right{
+  flex:1;
+  text-align:right;
+}
+
 /* BOTTOM BRAND BAR */
 
 .footerbar{
@@ -102,7 +117,7 @@ height:calc(100dvh - 100px);
 
 <div class="brandbar">
 
-  <div style="flex:1; text-align:left;">
+  <div class="brand-left">
     <span id="portalTitle">
       Dealer Auction Portal
       <span id="bidCountBadge"
@@ -119,7 +134,7 @@ height:calc(100dvh - 100px);
     </span>
   </div>
 
-  <div style="flex:1; text-align:center;">
+  <div class="brand-center">
     <input type="text"
            id="globalSearch"
            placeholder="Search Vehicle ID, Make, Year, KM..."
@@ -136,7 +151,7 @@ height:calc(100dvh - 100px);
            ">
   </div>
 
-  <div style="flex:1; text-align:right;">
+  <div class="brand-right">
     <button id="logoutBtn"
       style="
         background:white;
@@ -211,10 +226,9 @@ btn.onclick = function(){
 
   var search = document.getElementById("globalSearch");
 
-  // 🔹 Hide search smoothly
+  // 🔹 Hide search bar
   if(search){
-    search.style.opacity = "0";
-    search.style.visibility = "hidden";
+    search.style.display = "none";
     search.value = "";
   }
 
@@ -226,11 +240,10 @@ btn.onclick = function(){
     overlay.style.display = "none";
   };
 
-  // 🔹 Reload iframe (returns to login screen)
+  // 🔹 Reload iframe (back to login)
   iframe.src = iframe.src;
 
-};
-
+};  
 </script>
 
 <script>
@@ -244,10 +257,7 @@ window.addEventListener("message", function(event){
 
   /* 🔹 LOGIN SUCCESS */
   if(event.data.type === "LOGIN_SUCCESS"){
-  var search = document.getElementById("globalSearch");
-  if(search){
-    search.style.display = "inline-block";
-  }
+  document.getElementById("globalSearch").style.display = "inline-block";
 }
 
   /* 🔹 LOGOUT REQUEST */
