@@ -107,16 +107,22 @@ document.addEventListener("DOMContentLoaded", function(){
   const iframe = document.getElementById("portalFrame");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  // Show when Apps Script confirms login
-  window.addEventListener("message", function(event){
+  logoutBtn.style.display = "none";
 
-    if(event.data && event.data.type === "LOGIN_SUCCESS"){
+  iframe.addEventListener("load", function(){
+
+    const url = iframe.src;
+
+    if(url.includes("loggedin=true")){
       logoutBtn.style.display = "inline-block";
+    }
+
+    if(url.includes("logout=true")){
+      logoutBtn.style.display = "none";
     }
 
   });
 
-  // Logout click
   logoutBtn.onclick = function(){
 
     logoutBtn.style.display = "none";
