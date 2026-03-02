@@ -96,9 +96,6 @@ document.addEventListener("DOMContentLoaded", function(){
       /* LOGOUT */
   logoutBtn.onclick = function(){
 
-    search.style.display = "none";
-    search.value = "";
-
     const baseUrl = iframe.src.split("?")[0];
     iframe.src = baseUrl + "?logout=true";
 
