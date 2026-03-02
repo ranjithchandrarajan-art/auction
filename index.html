@@ -109,39 +109,25 @@ const iframe = document.querySelector("iframe");
 const search = document.getElementById("globalSearch");
 const logoutBtn = document.getElementById("logoutBtn");
 
-/* DEBUG: check if messages arrive */
 window.addEventListener("message", function(event){
 
-  console.log("Message received:", event.data);
-
-  if(!event.data) return;
-
-  if(event.data.type === "LOGIN_SUCCESS"){
+  if(event.data && event.data.type === "LOGIN_SUCCESS"){
     search.style.display = "inline-block";
-  }
-
-  if(event.data.type === "LOGOUT_SUCCESS"){
-    search.style.display = "none";
-    search.value = "";
   }
 
 });
 
-/* SEND SEARCH */
-function sendSearchToIframe(){
-  iframe.contentWindow.postMessage({
-    type:"GLOBAL_SEARCH",
-    value:search.value
-  },"*");
-}
-
 /* LOGOUT BUTTON */
-logoutBtn.onclick = function(){
-  iframe.contentWindow.postMessage({
-    type:"LOGOUT_REQUEST"
-  },"*");
-};
-</script>
+logoutBtn.addEventListener("click", function(){
 
+  // Hide search immediately
+  search.style.display = "none";
+  search.value = "";
+
+  // Reload iframe (forces return to login)
+  iframe.src = iframe.src;
+
+});
+</script>
 </body>
 </html>
