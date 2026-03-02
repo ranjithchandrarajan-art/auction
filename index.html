@@ -29,21 +29,6 @@ body{
   box-shadow:0 2px 6px rgba(0,0,0,.5);
 }
 
-/* SEARCH */
-#globalSearch{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  width:350px;
-  max-width:45%;
-  padding:6px 10px;
-  border-radius:6px;
-  border:none;
-  outline:none;
-  font-size:13px;
-  display:none;
-}
-
 /* LOGOUT */
 #logoutBtn{
   position:absolute;
@@ -91,9 +76,6 @@ iframe{
 
 <div class="brandbar">
   Dealer Auction Portal
-  <input type="text" id="globalSearch"
-         placeholder="Search Vehicle ID, Make, Year, KM..."
-         onkeyup="sendSearch()">
   <button id="logoutBtn">Logout</button>
 </div>
 
@@ -109,23 +91,9 @@ allowfullscreen></iframe>
 document.addEventListener("DOMContentLoaded", function(){
 
   const iframe = document.getElementById("portalFrame");
-  const search = document.getElementById("globalSearch");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  /* INITIAL STATE */
-  search.style.display = "none";
-
-  /* SHOW SEARCH WHEN IFRAME LOADS (ASSUME LOGIN) */
-  iframe.addEventListener("load", function(){
-
-    // If URL does NOT contain logout flag → show search
-    if(!iframe.src.includes("logout=true")){
-      search.style.display = "block";
-    }
-
-  });
-
-  /* LOGOUT */
+      /* LOGOUT */
   logoutBtn.onclick = function(){
 
     search.style.display = "none";
@@ -135,17 +103,6 @@ document.addEventListener("DOMContentLoaded", function(){
     iframe.src = baseUrl + "?logout=true";
 
   };
-
-  /* SEARCH */
-  search.addEventListener("keyup", function(){
-
-    const baseUrl = iframe.src.split("?")[0];
-    const value = encodeURIComponent(search.value.trim());
-
-    iframe.src = baseUrl + "?search=" + value;
-
-  });
-
 });
 </script>
 </body>
