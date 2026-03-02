@@ -93,25 +93,26 @@ document.addEventListener("DOMContentLoaded", function(){
   const iframe = document.getElementById("portalFrame");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  // Initial state
+  // Hide initially
   logoutBtn.style.display = "none";
 
+  // Show logout when iframe loads first time (after login)
   iframe.addEventListener("load", function(){
 
-    const url = iframe.src;
-
-    // If logout flag present → hide button
-    if(url.includes("logout=true")){
-      logoutBtn.style.display = "none";
-    } else {
-      // Normal load = assume logged in
+    // Only show if user has NOT just clicked logout
+    if(!iframe.src.includes("logout=true")){
       logoutBtn.style.display = "inline-block";
     }
 
   });
 
+  // Logout click
   logoutBtn.onclick = function(){
 
+    // Hide immediately
+    logoutBtn.style.display = "none";
+
+    // Reload iframe with logout flag
     const baseUrl = iframe.src.split("?")[0];
     iframe.src = baseUrl + "?logout=true";
 
