@@ -1,28 +1,145 @@
-/* ================= LOGOUT HANDLER FROM GITHUB ================= */
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dealer Auction Portal</title>
 
-window.addEventListener("message", function(event){
+<style>
+body{
+  margin:0;
+  background:#364586;
+  font-family:Arial;
+  overflow:hidden;
+}
+
+/* TOP BAR */
+.brandbar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:55px;
+  background:#364586;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+  z-index:999;
+  box-shadow:0 2px 6px rgba(0,0,0,.5);
+}
+
+/* SEARCH */
+#globalSearch{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  width:350px;
+  max-width:45%;
+  padding:6px 10px;
+  border-radius:6px;
+  border:none;
+  outline:none;
+  font-size:13px;
+  display:none;
+}
+
+/* LOGOUT */
+#logoutBtn{
+  position:absolute;
+  right:20px;
+  background:white;
+  color:#364586;
+  border:none;
+  padding:6px 14px;
+  border-radius:6px;
+  font-size:13px;
+  cursor:pointer;
+}
+
+/* FOOTER */
+.footerbar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:55px;
+  background:#364586;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+  z-index:999;
+  box-shadow:0 -2px 6px rgba(0,0,0,.5);
+}
+
+/* IFRAME */
+iframe{
+  position:absolute;
+  top:55px;
+  left:0;
+  width:100vw;
+  height:calc(100dvh - 110px);
+  border:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="brandbar">
+  Dealer Auction Portal
+  <input type="text" id="globalSearch"
+         placeholder="Search Vehicle ID, Make, Year, KM..."
+         onkeyup="sendSearch()">
+  <button id="logoutBtn">Logout</button>
+</div>
+
+<iframe id="portalFrame"
+src="https://script.google.com/macros/s/AKfycbzO9b6kRCVJFAZrRSWXuiDygekb_mMZS4CZGwmt8o57Ik5eh5gvlnLDEC2P1lRnmMTE/exec"
+allowfullscreen></iframe>
+
+<div class="footerbar">
+© 2026 Dealer Auction Platform | Secure Dealer Environment
+</div>
+
+<script>
+const iframe = document.getElementById("portalFrame");
+const search = document.getElementById("globalSearch");
+const logoutBtn = document.getElementById("logoutBtn");
+
+/* SEARCH SEND */
+function sendSearch(){
+  iframe.contentWindow.postMessage({
+    type:"GLOBAL_SEARCH",
+    value:search.value
+  },"*");
+}
+
+/* MESSAGE LISTENER */
+window.addEventListener("message",function(event){
 
   if(!event.data) return;
 
-  if(event.data.type === "LOGOUT_REQUEST"){
+  if(event.data.type === "LOGIN_SUCCESS"){
+    search.style.display = "inline-block";
+  }
 
-    // Clear session
-    sessionStorage.removeItem("dealerSession");
-
-    dealer = {};
-    data = {};
-
-    // Reset UI
-    document.getElementById("dashboard").style.display = "none";
-    document.getElementById("loginDiv").style.display = "flex";
-    document.getElementById("dealerName").innerText = "";
-    document.getElementById("stock").innerHTML = "";
-
-    // Tell GitHub logout finished
-    window.parent.postMessage(
-      { type: "LOGOUT_SUCCESS" },
-      "*"
-    );
+  if(event.data.type === "LOGOUT_SUCCESS"){
+    search.style.display = "none";
+    search.value="";
   }
 
 });
+
+/* LOGOUT CLICK */
+logoutBtn.onclick = function(){
+  iframe.contentWindow.postMessage({
+    type:"LOGOUT_REQUEST"
+  },"*");
+};
+</script>
+
+</body>
+</html>
