@@ -247,15 +247,21 @@ window.onload = function(){
   /* Logout Click */
   btn.onclick = function(){
 
-    search.style.display = "none";
-    search.value = "";
+  var overlay = document.getElementById("logoutOverlay");
+  var iframe = document.querySelector("iframe");
 
-    overlay.style.display = "flex";
+  overlay.style.display = "flex";
 
-    iframe.src = iframe.src; // reload to login
+  // Tell iframe to logout
+  iframe.contentWindow.postMessage(
+    { type: "LOGOUT_REQUEST" },
+    "*"
+  );
 
-  };
-
+  // Hide overlay after short delay
+  setTimeout(function(){
+    overlay.style.display = "none";
+  }, 800);
 };
 </script>
 
@@ -304,6 +310,26 @@ function sendSearchToIframe(){
   );
 
 }
+</script>
+<script>
+window.addEventListener("message", function(event){
+
+  if(!event.data) return;
+
+  const search = document.getElementById("globalSearch");
+
+  /* SHOW SEARCH AFTER LOGIN */
+  if(event.data.type === "LOGIN_SUCCESS"){
+    search.style.display = "inline-block";
+  }
+
+  /* HIDE SEARCH AFTER LOGOUT */
+  if(event.data.type === "LOGOUT_SUCCESS"){
+    search.style.display = "none";
+    search.value = "";
+  }
+
+});
 </script>
 </body>
 </html>
