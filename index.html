@@ -96,38 +96,5 @@ allowfullscreen></iframe>
 © 2026 Dealer Auction Platform | Secure Dealer Environment
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function(){
-
-  const iframe = document.getElementById("portalFrame");
-  const logoutBtn = document.getElementById("logoutBtn");
-
-  logoutBtn.style.display = "none";
-
-  iframe.addEventListener("load", function(){
-
-    const url = iframe.src;
-
-    if(url.includes("loggedin=true")){
-      logoutBtn.style.display = "inline-block";
-    }
-
-    if(url.includes("logout=true")){
-      logoutBtn.style.display = "none";
-    }
-
-  });
-
-  logoutBtn.onclick = function(){
-
-    logoutBtn.style.display = "none";
-
-    const baseUrl = iframe.src.split("?")[0];
-    iframe.src = baseUrl + "?logout=true";
-
-  };
-
-});
-</script>
 </body>
 </html>
