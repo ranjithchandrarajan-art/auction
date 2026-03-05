@@ -6,26 +6,6 @@
 
 <style>
 
-  /* SHRINK TOP HEADER BAR */
-
-body > div:first-child{
-  padding:6px 0 !important;
-  font-size:16px;
-}
-
-/* REDUCE SPACE ABOVE DASHBOARD */
-
-#dashboard{
-  margin-top:8px !important;
-  padding-top:8px !important;
-}
-
-/* REDUCE SEARCH AREA SPACE */
-
-#dashboard .row{
-  margin-bottom:8px;
-}
-  
 body{
   margin:0;
   background:#364586;
@@ -52,21 +32,21 @@ body{
 
 /* FOOTER */
 .footerbar{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-min-height:55px;        /* allow wrap */
-background:#364586;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:600;
-z-index:999;
-box-shadow:0 -2px 6px rgba(0,0,0,.5);
-text-align:center;      /* 🔥 important */
-padding:8px 10px;       /* spacing for mobile */
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  min-height:55px;
+  background:#364586;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+  z-index:999;
+  box-shadow:0 -2px 6px rgba(0,0,0,.5);
+  text-align:center;
+  padding:8px 10px;
 }
 
 /* IFRAME */
@@ -75,22 +55,23 @@ iframe{
   top:55px;
   left:0;
   width:100vw;
-  height:calc(100dvh - 110px);
+  height:calc(100vh - 110px);
   border:none;
-  z-index:1;              /* ADD THIS */
 }
+
 </style>
 </head>
 
 <body>
 
 <div class="brandbar">
-  Dealer Auction Portal
-  </div>
+Dealer Auction Portal
+</div>
 
-<iframe id="portalFrame"
+<iframe
 src="https://script.google.com/macros/s/AKfycbzO9b6kRCVJFAZrRSWXuiDygekb_mMZS4CZGwmt8o57Ik5eh5gvlnLDEC2P1lRnmMTE/exec"
-allowfullscreen></iframe>
+allowfullscreen>
+</iframe>
 
 <div class="footerbar">
 © 2026 Dealer Auction Platform | Secure Dealer Environment
