@@ -136,23 +136,18 @@ function sendToIframe(type){
 
 /* Listen for messages coming UP from the iframe */
 window.addEventListener("message", function(e){
-  if(!e.data || !e.data.type) return;
+  var type = (e.data && e.data.type) ? e.data.type : e.data;
 
-  if(e.data.type === "DEALER_LOGGED_IN"){
-    // Show both buttons
+  if(type === "DEALER_LOGGED_IN"){
     document.getElementById("btnMyBids").style.display = "inline-block";
     document.getElementById("btnLogout").style.display = "inline-block";
   }
-
-  if(e.data.type === "DEALER_LOGGED_OUT"){
-    // Hide both buttons
+  if(type === "DEALER_LOGGED_OUT"){
     document.getElementById("btnMyBids").style.display = "none";
     document.getElementById("btnLogout").style.display = "none";
   }
-
-  // Existing overlay scroll-lock messages
-  if(e.data === "OPEN_MODAL")  document.body.style.overflow = "hidden";
-  if(e.data === "CLOSE_MODAL") document.body.style.overflow = "";
+  if(type === "OPEN_MODAL")  document.body.style.overflow = "hidden";
+  if(type === "CLOSE_MODAL") document.body.style.overflow = "";
 });
 </script>
 </body>
