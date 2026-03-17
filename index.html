@@ -127,15 +127,27 @@ iframe{
 </div>
 
 <script>
-var iframe = document.getElementById("auctionFrame");
-
-/* Send command down into the iframe */
+/* Send command down into the iframe — try direct window AND any nested frames */
 function sendToIframe(type){
-  iframe.contentWindow.postMessage({type:type}, "*");
+  var msg = {type: type};
+  var f = document.getElementById("auctionFrame");
+  if(!f) return;
+
+  /* 1. Direct contentWindow */
+  try { f.contentWindow.postMessage(msg, "*"); } catch(e){}
+
+  /* 2. Apps Script sometimes wraps HTML in an extra nested iframe — try those too */
+  try {
+    var frames = f.contentWindow.frames;
+    for(var i = 0; i < frames.length; i++){
+      try { frames[i].postMessage(msg, "*"); } catch(ex){}
+    }
+  } catch(e){}
 }
 
 /* Listen for messages coming UP from the iframe */
 window.addEventListener("message", function(e){
+  /* handle both object {type:...} and plain string formats */
   var type = (e.data && e.data.type) ? e.data.type : e.data;
 
   if(type === "DEALER_LOGGED_IN"){
