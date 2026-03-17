@@ -101,19 +101,9 @@ iframe{
 <body>
 
 <div class="brandbar">
-  <div class="bar-left">
-    <button class="bar-btn btn-mybids" id="btnMyBids" onclick="sendToIframe('ACTION_MY_BIDS')">
-      📋 My Bids
-    </button>
-  </div>
-
+  <div class="bar-left"></div>
   <div class="bar-title">Dealer Auction Portal</div>
-
-  <div class="bar-right">
-    <button class="bar-btn btn-logout" id="btnLogout" onclick="sendToIframe('ACTION_LOGOUT')">
-      Logout
-    </button>
-  </div>
+  <div class="bar-right"></div>
 </div>
 
 <iframe
@@ -127,37 +117,8 @@ iframe{
 </div>
 
 <script>
-/* Send command down into the iframe — try direct window AND any nested frames */
-function sendToIframe(type){
-  var msg = {type: type};
-  var f = document.getElementById("auctionFrame");
-  if(!f) return;
-
-  /* 1. Direct contentWindow */
-  try { f.contentWindow.postMessage(msg, "*"); } catch(e){}
-
-  /* 2. Apps Script sometimes wraps HTML in an extra nested iframe — try those too */
-  try {
-    var frames = f.contentWindow.frames;
-    for(var i = 0; i < frames.length; i++){
-      try { frames[i].postMessage(msg, "*"); } catch(ex){}
-    }
-  } catch(e){}
-}
-
-/* Listen for messages coming UP from the iframe */
 window.addEventListener("message", function(e){
-  /* handle both object {type:...} and plain string formats */
   var type = (e.data && e.data.type) ? e.data.type : e.data;
-
-  if(type === "DEALER_LOGGED_IN"){
-    document.getElementById("btnMyBids").style.display = "inline-block";
-    document.getElementById("btnLogout").style.display = "inline-block";
-  }
-  if(type === "DEALER_LOGGED_OUT"){
-    document.getElementById("btnMyBids").style.display = "none";
-    document.getElementById("btnLogout").style.display = "none";
-  }
   if(type === "OPEN_MODAL")  document.body.style.overflow = "hidden";
   if(type === "CLOSE_MODAL") document.body.style.overflow = "";
 });
